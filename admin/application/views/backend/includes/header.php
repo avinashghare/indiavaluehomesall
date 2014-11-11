@@ -10,6 +10,7 @@
     <!-- Custom styles for this template -->
     <link href="<?php echo base_url('assets/css/style.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/style-responsive.css'); ?>" rel="stylesheet" />
+    <link href="<?php echo base_url('assets/css/tinyscrollbar.css'); ?>" rel="stylesheet" />
 	<link href="<?php echo base_url('assets/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css'); ?>" rel="stylesheet" type="text/css" media="screen"/>
     <link rel="stylesheet" href="<?php echo base_url('assets/css/owl.carousel.css'); ?>" type="text/css">
 	<link href="<?php echo base_url('assets/css/TableTools.css'); ?>" rel="stylesheet">
@@ -19,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/assets/bootstrap-daterangepicker/daterangepicker.css'); ?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/select2.css'); ?>" type="text/css" />
 	<script src="<?php echo base_url('assets/js/jquery.js'); ?>"></script>
+	<script src="<?php echo base_url('assets/js/tinyscrollbar.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/jquery-1.8.3.min.js'); ?>"></script>
 	 <script src="<?php echo base_url('assets/js/jquery.sparkline.js'); ?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js'); ?> "></script>

@@ -19,6 +19,7 @@ phonecatControllers.controller('home', ['$scope', 'TemplateService', 'MainJson',
       allcontentlinks2=[];
       allcontentlinks3=[];
       allcontentlinks4=[];
+      allcity=[];
       allpages=[];
         var oncitysuccess = function (data, status) {
             $scope.cities = data;
@@ -33,6 +34,13 @@ phonecatControllers.controller('home', ['$scope', 'TemplateService', 'MainJson',
             console.log($scope.videos);
         };
         MainJson.allvideos().success(onvideosuccess);
+     
+        var oncitysuccess = function (data, status) {
+            $scope.city = data;
+            allcity=data;
+            console.log($scope.city);
+        };
+        MainJson.allcity().success(oncitysuccess);
      
      
        

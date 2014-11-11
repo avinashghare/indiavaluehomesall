@@ -53,5 +53,11 @@ class State_model extends CI_Model
 		
 		return $return;
 	}
+    
+	public function getallcity()
+	{
+		$query=$this->db->query("SELECT * FROM `city`  ORDER BY `id` ASC")->result();
+		return $query;
+	}
 }
 ?>

@@ -67,6 +67,11 @@ public function getshowallvideos( )
 		$data['message'] = $this->footerlink_model->getallcontentlinks();
 		$this->load->view( 'json',$data );
 	}
+//	public function getallcity( )
+//	{
+//		$data['message'] = $this->state_model->getallcity();
+//		$this->load->view( 'json',$data );
+//	}
 	
 	public function getallcontentlinks1( )
 	{
