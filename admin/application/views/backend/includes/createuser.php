@@ -56,10 +56,17 @@
 					<div class=" form-group">
 					  <label class="col-sm-2 control-label">Select Accesslevel</label>
 					  <div class="col-sm-4">
-						<?php 	 echo form_dropdown('accesslevel',$accesslevel,set_value('accesslevel'),'class="chzn-select form-control" 	data-placeholder="Choose a Accesslevel..."');
+						<?php 	 echo form_dropdown('accesslevel',$accesslevel,set_value('accesslevel'),'id="select10" onchange="changebuilder()" class="chzn-select form-control" 	data-placeholder="Choose a Accesslevel..."');
 						?>
 					  </div>
 					</div>
+					<div class=" form-group " id="onbuilderselect" style="display: none">
+                      <label class="col-sm-2 control-label">Builder</label>
+                      <div class="col-sm-4">
+                        <?php 	 echo form_dropdown('builder',$builder,set_value('builder'),' id="select4" class="chzn-select form-control" 	data-placeholder="Choose a builder..."');
+                        ?>
+                      </div>
+                    </div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">&nbsp;</label>
 						<div class="col-sm-4">	
@@ -71,3 +78,16 @@
 		</section>
     </div>
 </div>
+<script type="text/javascript">
+    function changebuilder() {
+        console.log($('#select10').val());
+        if($('#select10').val()==2)
+        {
+            $( "#onbuilderselect" ).show();
+        }
+        else 
+        {
+            $( "#onbuilderselect" ).hide();
+        }
+    }
+</script>

@@ -30,11 +30,24 @@ service.factory('MainJson', function ($http) {
         allcontentlinks4: function () {
             return $http.post(resturl + 'json/getallcontentlinks4');
         },
-        allpages: function () {
-            return $http.post(resturl + 'json/getallpages');
-        },
+//        allpages: function (id) {
+//            return $http.post(resturl + 'json/getallpages',{
+//                param:
+//                {
+//                    id:id
+//                }
+//            });
+//            );
+//        },
         allpropertytypes: function () {
             return $http.post(resturl + 'json/getallpropertytype');
+        },
+        allpages: function (id) {
+            return $http.get(resturl + 'json/getonepage', {
+                params: {
+                    id: id
+                }
+            });
         },
         searchproperties: function (locality, city, propertytype) {
             return $http.get(resturl + 'json/searchproperty', {

@@ -50,7 +50,6 @@ class Builder_model extends CI_Model
 	{
 		$query=$this->db->query("SELECT * FROM `builder`  ORDER BY `id` ASC")->result();
 		$return=array(
-		"" => ""
 		);
 		foreach($query as $row)
 		{

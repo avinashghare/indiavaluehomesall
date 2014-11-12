@@ -1,4 +1,4 @@
-var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'Service']);
+var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'Service', 'ngRoute', 'ngSanitize']);
 
 phonecatControllers.controller('home', ['$scope', 'TemplateService', 'MainJson','$location',
  function ($scope, TemplateService, MainJson,$location) {
@@ -121,6 +121,17 @@ phonecatControllers.controller('footerCtrl', function($scope,TemplateService,Mai
         };
         MainJson.allpages().success(pagessuccess);
 });
+
+
+//phonecatControllers.controller('pageCtrl', function($scope,TemplateService,MainJson) {
+//     
+//        var pagessuccess = function (data, status) {
+//            $scope.pages = data;
+//            allpages=data;
+//            console.log($scope.pages);
+//        };
+//        MainJson.allpages().success(pagessuccess);
+//});
 
 phonecatControllers.controller('nri', ['$scope', 'TemplateService', 'MainJson',
                                         function ($scope, TemplateService, MainJson) {
@@ -334,6 +345,25 @@ phonecatControllers.controller('videos', ['$scope', 'TemplateService', 'MainJson
 
 
 }]);
+phonecatControllers.controller('page',
+                                        function ($scope, TemplateService, MainJson, $routeParams) {
+                                            
+        TemplateService.changetitle("Page");
+        $scope.template = TemplateService;
+        TemplateService.slider = "";
+        TemplateService.sliderfooter = "";
+        TemplateService.content = "views/page.html";
+        $scope.homeactive = "active";
+        allpages=[];
+        $scope.getid=$routeParams.id;
+                                            console.log($scope.getid);
+        var pagessuccess = function (data, status) {
+            $scope.pages = data;
+            allpages=data;
+            console.log($scope.pages);
+        };
+        MainJson.allpages($scope.getid).success(pagessuccess);
+});
 
 phonecatControllers.controller('headerctrl',
     function ($scope, TemplateService) {

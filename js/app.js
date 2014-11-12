@@ -72,6 +72,10 @@ firstapp.config(['$routeProvider',
             templateUrl: 'views/template.html',
             controller: 'videos'
         }).
+        when('/page/:id', {
+            templateUrl: 'views/template.html',
+            controller: 'page'
+        }).
         otherwise({
             redirectTo: '/home'
         });

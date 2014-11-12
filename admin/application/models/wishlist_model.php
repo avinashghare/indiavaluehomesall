@@ -25,6 +25,19 @@ INNER JOIN `builder` ON `builder`.`id`=`property`.`builder`";
 		
 		return $query;
 	}
+	public function viewwishlistofbuilder()
+	{
+        $builderid=$this->session->userdata('builderid');
+		$query="SELECT `propertywishlist`.`property`, `propertywishlist`.`name` as `pname`, `propertywishlist`.`email`, `propertywishlist`.`phone`, `propertywishlist`.`timestamp`,`property`.`name` as `propertyname`,`builder`.`name` as `buildername` 
+        FROM `propertywishlist` 
+        LEFT OUTER JOIN `property` ON `propertywishlist`.`property`=`property`.`id`
+LEFT OUTER JOIN `builder` ON `builder`.`id`=`property`.`builder`
+WHERE `property`.`builder`='$builderid'";
+	   
+		$query=$this->db->query($query)->result();
+		
+		return $query;
+	}
 	 public function exportcontact() {
         
 		$this->load->dbutil();
@@ -43,6 +56,28 @@ INNER JOIN `builder` ON `builder`.`id`=`property`.`builder`";
         }
     }
     public function exportwishlist() {
+        
+		$this->load->dbutil();
+        $builderid=$this->session->userdata('builderid');
+		$query="SELECT `propertywishlist`.`property`, `propertywishlist`.`name` as `pname`, `propertywishlist`.`email`, `propertywishlist`.`phone`, `propertywishlist`.`timestamp`,`property`.`name` as `propertyname`,`builder`.`name` as `buildername` 
+        FROM `propertywishlist` 
+        LEFT OUTER JOIN `property` ON `propertywishlist`.`property`=`property`.`id`
+LEFT OUTER JOIN `builder` ON `builder`.`id`=`property`.`builder`
+WHERE `property`.`builder`='$builderid'";
+        //return $query;
+        $content= $this->dbutil->csv_from_result($query);
+        //$data = 'Some file data';
+
+        if ( ! write_file('./csvgenerated/wishlistfileofbuilder.csv', $content))
+        {
+             echo 'Unable to write the file';
+        }
+        else
+        {
+             echo 'File written!';
+        }
+    }
+    public function exportwishlistofbuilder() {
         
 		$this->load->dbutil();
         $query=$this->db->query("SELECT `propertywishlist`.`property`, `propertywishlist`.`name` as `pname`, `propertywishlist`.`email`, `propertywishlist`.`phone`, `propertywishlist`.`timestamp`,`property`.`name` as `propertyname`,`builder`.`name` as `buildername` FROM `propertywishlist` INNER JOIN `property` ON `propertywishlist`.`property`=`property`.`id`

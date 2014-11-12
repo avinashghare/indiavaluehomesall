@@ -86,5 +86,10 @@ class Page_model extends CI_Model
 		
 		return $query;
 	}
+	public function getonepage($id)
+	{
+		$query=$this->db->query("SELECT * FROM `page` WHERE `id`='$id'")->row();
+		return $query;
+	}
 }
 ?>

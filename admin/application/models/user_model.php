@@ -8,7 +8,7 @@ class User_model extends CI_Model
 	{
 		
 		$password=md5($password);
-		$query ="SELECT `id`,`name`,`email`,`accesslevel` FROM `user` WHERE `email` LIKE '$username' AND `password` LIKE '$password' AND `status`=1 AND `accesslevel` IN (1,3) ";
+		$query ="SELECT `id`,`name`,`email`,`accesslevel`,`builderid` FROM `user` WHERE `email` LIKE '$username' AND `password` LIKE '$password' AND `status`=1 AND `accesslevel` IN (1,2,3) ";
 		$row =$this->db->query( $query );
 		if ( $row->num_rows() > 0 ) {
 			$row=$row->row();
@@ -20,7 +20,8 @@ class User_model extends CI_Model
 				'email' => $this->email,
 				'name' => $this->name ,
 				'accesslevel' => $row->accesslevel ,
-				'logged_in' => 'true',
+				'builderid' => $row->builderid ,
+				'logged_in' => 'true'
 			);
 			$this->session->set_userdata( $newdata );
 			return true;
@@ -29,7 +30,7 @@ class User_model extends CI_Model
 			return false;
 	}
 	
-	public function create($name,$dob,$password,$accesslevel,$email,$contactno,$status)
+	public function create($name,$dob,$password,$accesslevel,$email,$contactno,$status,$builder)
 	{ 
 		$data  = array(
 			'password' =>md5($password),
@@ -39,6 +40,7 @@ class User_model extends CI_Model
 			'email' => $email,
 			'contactno' => $contactno,
 			'status' =>$status,
+			'builderid' =>$builder
 			
 		);
 		
@@ -56,8 +58,8 @@ class User_model extends CI_Model
 	function viewusers()
 	{
 		$query="SELECT `user`.`id` as `id`,`user`.`name` as `name`,`user`.`email`,`user`.`contactno`,`user`.`status` as `status`,`accesslevel`.`name` as `accesslevel`,`country`.`name` as `country`,`user`.`city` FROM `user`
-		INNER JOIN `accesslevel` ON `user`.`accesslevel` = `accesslevel`.`id` 
-		INNER JOIN `country` ON `user`.`country` = `country`.`id` 
+		LEFT OUTER JOIN `accesslevel` ON `user`.`accesslevel` = `accesslevel`.`id` 
+		LEFT OUTER JOIN `country` ON `user`.`country` = `country`.`id` 
 		ORDER BY `user`.`id` ASC";
 	   
 		$query=$this->db->query($query)->result();

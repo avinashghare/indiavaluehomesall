@@ -99,6 +99,12 @@ public function getshowallvideos( )
 		$data['message'] = $this->page_model->getallpages();
 		$this->load->view( 'json',$data );
 	}
+	public function getonepage()
+	{
+        $id=$this->input->get_post("id");
+		$data['message'] = $this->page_model->getonepage($id);
+		$this->load->view( 'json',$data );
+	}
 	
     public function addtopropertywishlist()
     {

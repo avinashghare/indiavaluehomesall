@@ -35,6 +35,7 @@ class Site extends CI_Controller
 		$this->checkaccess($access);
 		$data['accesslevel']=$this->user_model->getaccesslevels();
 		$data[ 'status' ] =$this->user_model->getstatusdropdown();
+		$data[ 'builder' ] =$this->builder_model->getbuilderdropdown();
 		$data[ 'page' ] = 'createuser';
 		$data[ 'title' ] = 'Create User';
 		$this->load->view( 'template', $data );	
@@ -56,6 +57,7 @@ class Site extends CI_Controller
 			$data['alerterror'] = validation_errors();
 			$data[ 'status' ] =$this->user_model->getstatusdropdown();
 			$data['accesslevel']=$this->user_model->getaccesslevels();
+            $data[ 'builder' ] =$this->builder_model->getbuilderdropdown();
 			$data['page']='createuser';
 			$data['title']='Create New User';
 			$this->load->view('template',$data);
@@ -73,7 +75,8 @@ class Site extends CI_Controller
 			$email=$this->input->post('email');
 			$contactno=$this->input->post('contactno');
 			$status=$this->input->post('status');
-			if($this->user_model->create($name,$dob,$password,$accesslevel,$email,$contactno,$status)==0)
+			$builder=$this->input->post('builder');
+			if($this->user_model->create($name,$dob,$password,$accesslevel,$email,$contactno,$status,$builder)==0)
 			$data['alerterror']="New user could not be created.";
 			else
 			$data['alertsuccess']="User created Successfully.";
@@ -731,6 +734,18 @@ $id2=$this->input->get("id2");
 //		$data[ 'title' ] = 'Create contact';
 //		$this->load->view( 'template', $data );	
 	}
+	public function exportwishlistofbuilder()
+	{
+		$access = array("2");
+		$this->checkaccess($access);
+        $this->wishlist_model->exportwishlistofbuilder();
+        $data['table']=$this->wishlist_model->viewwishlistofbuilder();
+        $data['page']='viewwishlist';
+        $this->load->view('template',$data);
+//		$data[ 'page' ] = 'createcontact';
+//		$data[ 'title' ] = 'Create contact';
+//		$this->load->view( 'template', $data );	
+	}
     //wishlist
     
     function viewwishlist()
@@ -738,6 +753,16 @@ $id2=$this->input->get("id2");
         $access = array("1");
         $this->checkaccess($access);
         $data['table']=$this->wishlist_model->viewwishlista();
+        $data['page']='viewwishlist';
+		$data['title']='View Wishlist';
+        $this->load->view('template',$data);
+    }
+    
+    function viewwishlistofbuilder()
+    {
+        $access = array("2");
+        $this->checkaccess($access);
+        $data['table']=$this->wishlist_model->viewwishlistofbuilder();
         $data['page']='viewwishlist';
 		$data['title']='View Wishlist';
         $this->load->view('template',$data);
