@@ -3,7 +3,7 @@
         Wishlist
     </header>
     <div class="col-md-11">
-	<div class=" pull-right col-md-1 createbtn" ><a class="btn btn-primary" href="<?php echo site_url('site/exportwishlistofbuilder'); ?>"><i class="icon-plus"></i>Export To CSV </a></div>
+	<div class=" pull-right col-md-1 createbtn" ><a  target="_blank" class="btn btn-primary" href="<?php echo site_url('site/exportwishlistofbuilder'); ?>"><i class="icon-plus"></i>Export To CSV </a></div>
 	</div>
     <table class="table table-striped table-hover border-top " id="sample_1" cellpadding="0" cellspacing="0" >
         <thead>

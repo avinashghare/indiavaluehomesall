@@ -58,30 +58,10 @@ WHERE `property`.`builder`='$builderid'";
     public function exportwishlist() {
         
 		$this->load->dbutil();
-        $builderid=$this->session->userdata('builderid');
-		$query="SELECT `propertywishlist`.`property`, `propertywishlist`.`name` as `pname`, `propertywishlist`.`email`, `propertywishlist`.`phone`, `propertywishlist`.`timestamp`,`property`.`name` as `propertyname`,`builder`.`name` as `buildername` 
+		$query=$this->db->query("SELECT `propertywishlist`.`property`, `propertywishlist`.`name` as `pname`, `propertywishlist`.`email`, `propertywishlist`.`phone`, `propertywishlist`.`timestamp`,`property`.`name` as `propertyname`,`builder`.`name` as `buildername` 
         FROM `propertywishlist` 
         LEFT OUTER JOIN `property` ON `propertywishlist`.`property`=`property`.`id`
-LEFT OUTER JOIN `builder` ON `builder`.`id`=`property`.`builder`
-WHERE `property`.`builder`='$builderid'";
-        //return $query;
-        $content= $this->dbutil->csv_from_result($query);
-        //$data = 'Some file data';
-
-        if ( ! write_file('./csvgenerated/wishlistfileofbuilder.csv', $content))
-        {
-             echo 'Unable to write the file';
-        }
-        else
-        {
-             echo 'File written!';
-        }
-    }
-    public function exportwishlistofbuilder() {
-        
-		$this->load->dbutil();
-        $query=$this->db->query("SELECT `propertywishlist`.`property`, `propertywishlist`.`name` as `pname`, `propertywishlist`.`email`, `propertywishlist`.`phone`, `propertywishlist`.`timestamp`,`property`.`name` as `propertyname`,`builder`.`name` as `buildername` FROM `propertywishlist` INNER JOIN `property` ON `propertywishlist`.`property`=`property`.`id`
-INNER JOIN `builder` ON `builder`.`id`=`property`.`builder`");
+LEFT OUTER JOIN `builder` ON `builder`.`id`=`property`.`builder`");
         //return $query;
         $content= $this->dbutil->csv_from_result($query);
         //$data = 'Some file data';
@@ -92,9 +72,28 @@ INNER JOIN `builder` ON `builder`.`id`=`property`.`builder`");
         }
         else
         {
-             echo 'File written!';
+            redirect(base_url("csvgenerated/wishlistfile.csv"), 'refresh');
+//             echo 'File written!';
         }
     }
+//    public function exportwishlistofbuilder() {
+//        
+//		$this->load->dbutil();
+//        $query=$this->db->query("SELECT `propertywishlist`.`property`, `propertywishlist`.`name` as `pname`, `propertywishlist`.`email`, `propertywishlist`.`phone`, `propertywishlist`.`timestamp`,`property`.`name` as `propertyname`,`builder`.`name` as `buildername` FROM `propertywishlist` INNER JOIN `property` ON `propertywishlist`.`property`=`property`.`id`
+//INNER JOIN `builder` ON `builder`.`id`=`property`.`builder`");
+//        //return $query;
+//        $content= $this->dbutil->csv_from_result($query);
+//        //$data = 'Some file data';
+//
+//        if ( ! write_file('./csvgenerated/wishlistfile.csv', $content))
+//        {
+//             echo 'Unable to write the file';
+//        }
+//        else
+//        {
+//             echo 'File written!';
+//        }
+//    }
     public function exportregistereduser() {
         
 		$this->load->dbutil();
@@ -144,8 +143,48 @@ INNER JOIN `builder` ON `builder`.`id`=`property`.`builder`");
         );
 
         $this->db->insert( 'propertywishlist', $data );
+        
+        $builderemailid=$this->db->query("SELECT  `property`.`id`,`builder`.`email` 
+FROM  `propertywishlist` 
+INNER JOIN  `property` ON  `property`.`id` =  `propertywishlist`.`property`
+INNER JOIN  `builder` ON  `property`.`builder` =  `builder`.`id` 
+WHERE `property`.`id`='$property'")->row();
+        
+        $propertydetails=$this->db->query("SELECT `property`.`id`,`property`.`name`,`area`.`name` as `area`,`property`.`price`,`propertytype`.`name` as `propertytype`,`builder`.`name` as `builder` FROM `property` 
+		INNER JOIN `propertytype` ON `propertytype`.`id` =  `property`.`propertytype`
+		INNER JOIN `builder` ON `builder`.`id` =  `property`.`builder`
+		INNER JOIN `area` ON `area`.`id` =  `property`.`area`
+        WHERE `property`.`id`='$property'")->row();
+        
+        $builderemailid= $builderemailid->email;
+        
+        $propertyname= $propertydetails->name;
+        $propertyarea= $propertydetails->area;
+        $propertyprice= $propertydetails->price;
+        $propertytype= $propertydetails->propertytype;
+        $propertybuilder= $propertydetails->builder;
+            
+        $this->load->library('email');
+            $this->email->from('mail@wohlig.com', 'indiavaluehomes');
+            $this->email->to($builderemailid);
+            $this->email->subject('indiavaluehomes');
+            $msg="User WishList For Property<br>
+            <h3>User Details</h3><br>
+            User Name- '$name'<br>
+            User Email- '$email'<br>
+            Phone Number- '$phone'<br><br>
+            <h3>Property Details</h3><br>
+            Property Name- '$propertyname'<br>
+            Property Area- '$propertyarea'<br>
+            Property Price- '$propertyprice'<br>
+            Property Type- '$propertytype'<br>
+            Property Builder- '$propertybuilder'<br>";
+            $this->email->message($msg);
+
+            $this->email->send();
         return 1;
     }
+    
     
     public function submitcontact($name,$email,$comment,$contact) {
         $data  = array(
@@ -181,6 +220,29 @@ INNER JOIN `builder` ON `builder`.`id`=`property`.`builder`");
         return $query;
     }
     
+    function exportwishlistofbuilder()
+	{
+		$this->load->dbutil();
+        $builderid=$this->session->userdata('builderid');
+		$query=$this->db->query("SELECT `propertywishlist`.`property`, `propertywishlist`.`name` as `pname`, `propertywishlist`.`email`, `propertywishlist`.`phone`, `propertywishlist`.`timestamp`,`property`.`name` as `propertyname`,`builder`.`name` as `buildername` 
+        FROM `propertywishlist` 
+        LEFT OUTER JOIN `property` ON `propertywishlist`.`property`=`property`.`id`
+LEFT OUTER JOIN `builder` ON `builder`.`id`=`property`.`builder`
+WHERE `property`.`builder`='$builderid'");
+        $timestamp=new DateTime();
+        $timestamp=$timestamp->format('Y-m-d_H.i.s');
+       $content= $this->dbutil->csv_from_result($query);
+        //$data = 'Some file data';
+
+        if ( ! write_file("./csvgenerated/wishlistofbuilder_$timestamp.csv", $content))
+        {
+             echo 'Unable to write the file';
+        }
+        else
+        {
+            redirect(base_url("csvgenerated/wishlistofbuilder_$timestamp.csv"), 'refresh');
+        }
+	}
     
 }
 ?>

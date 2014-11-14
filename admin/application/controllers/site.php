@@ -725,11 +725,12 @@ $id2=$this->input->get("id2");
 	public function exportwishlist()
 	{
 		$access = array("1");
-		$this->checkaccess($access);
         $this->wishlist_model->exportwishlist();
         $data['table']=$this->wishlist_model->viewwishlista();
         $data['page']='viewwishlist';
         $this->load->view('template',$data);
+        
+        
 //		$data[ 'page' ] = 'createcontact';
 //		$data[ 'title' ] = 'Create contact';
 //		$this->load->view( 'template', $data );	
@@ -763,7 +764,7 @@ $id2=$this->input->get("id2");
         $access = array("2");
         $this->checkaccess($access);
         $data['table']=$this->wishlist_model->viewwishlistofbuilder();
-        $data['page']='viewwishlist';
+        $data['page']='viewwishlistofbuilder';
 		$data['title']='View Wishlist';
         $this->load->view('template',$data);
     }
