@@ -2,6 +2,8 @@
     <div class="container2">
        <div class="cityrow scrollbar">
         <ul class="nav nav-pills" >
+           <li class="active"><a ng-click="searchpress(localitysel,propertytypesel,'')">All</a>
+            </li>
             <li ng-repeat="city1 in city"><a ng-click="searchpress(localitysel,propertytypesel,city1.id)">{{city1.name}}</a>
             </li>
         </ul>
